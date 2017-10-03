@@ -127,5 +127,7 @@ os.path.join(BASE_DIR,"static"),
 ]
 
 STATIC_URL = '/static/'
-AUTH_PROFILE_MODULE = "account.UserProfile"
+AUTH_PROFILE_MODULE = "log.UserProfile"
 LOGIN_REDIRECT_URL ='/'
+
+
