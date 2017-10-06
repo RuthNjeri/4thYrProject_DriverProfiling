@@ -20,12 +20,19 @@ from log import views
 from log.forms import LoginForm
 
 
+
 urlpatterns = [
+    url(r'^ussd/',include('ussd.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'',include('log.urls')),
     url(r'^login/$',auth_views.login,{'template_name':'login.html','authentication_form':LoginForm},name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/login'}),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^home/$', views.home, name='home'),
-    url(r'^profile/$', views.update_profile, name='profile')
+    url(r'^sacco/$', views.sacco, name='sacco'),
+    url(r'^sacco/delete/(?P<pk>\d+)/$',views.delete_sacco, name='delete_sacco'),
+    url(r'^drivers/$', views.drivers, name='drivers'),
+    url(r'^drivers/delete/(?P<pk>\d+)/$', views.delete_driver, name='delete_driver'),
+    url(r'^profile/$', views.update_profile, name='profile'),
+    url(r'',include('log.urls')),
+   
 ]

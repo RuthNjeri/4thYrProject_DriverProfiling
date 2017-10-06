@@ -7,28 +7,14 @@
 <p>Please input correct details</p>
 {% endif %}
 
-{% if next %}
-    {% if user.is_authenticated %}
-
-<p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-
-<p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
-
 <div class="container">
-    <div class="row"> 
-    {% if messages %}
+    <div class="row">
+       {% if messages %}
     {% for message in messages  %}    
       <div class="alert alert-success"><strong>{{message}}</strong></div>
     {% endfor %}  
     {% endif %}
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-4 col-md-offset-2">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Edit Profile</h3>

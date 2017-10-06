@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm 
 from .models import UserProfile
 from .models import User
+from ussd.models import Drivers
 
 
 # If you don't do this you cannot use Bootstrap CSS
@@ -21,6 +22,5 @@ class ProfileForm(forms.ModelForm):
 			'email':forms.TextInput(attrs={'class':'form-control'}),
 			'location':forms.TextInput(attrs={'class':'form-control'}),
 			'phone_number':forms.TextInput(attrs={'class':'form-control'}),
-			'role':forms.TextInput(attrs={'class':'form-control'})
+			'role':forms.Select(attrs={'class':'form-control'})
 		}
-		

@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from .forms import ProfileForm
 from django.contrib import messages
 from log.models import UserProfile
+from ussd.models import Drivers
 
 # Create your views here.
 
@@ -32,6 +33,7 @@ def signup(request):
 
 @login_required
 def update_profile(request):
+	
 	exists = UserProfile.objects.filter(user=request.user).exists()
 	if exists:
 		profile_data = UserProfile.objects.get(user=request.user)
@@ -56,3 +58,46 @@ def update_profile(request):
 	return render(request, 'profile.html', {
 		'profile_form': profile_form
 	})
+
+
+def drivers(request):
+	if request.method=='POST':
+
+		registration= request.POST.get('registration')
+		Drivers.objects.filter(vehicle_reg__iexact=registration).update(user=request.user)
+		return redirect('drivers')
+
+	
+	availableDrivers= Drivers.objects.filter(user=None)
+	drivers = Drivers.objects.filter(user=request.user)
+	
+
+	return render(request,"drivers.html",{
+		'donda': drivers, 'available': availableDrivers 
+	})
+
+def delete_driver(request,pk):
+	Drivers.objects.filter(pk=pk).update(user=None)
+	return redirect('drivers')
+
+
+
+
+
+def sacco(request):
+	if request.method=='POST':
+
+		registration= request.POST.get('registration')
+		UserProfile.objects.filter(business_name=registration).update(entities=request.user)
+		return redirect('sacco')
+
+	sacco= UserProfile.objects.filter(role='Sacco')
+	savedSacco = UserProfile.objects.filter(entities=request.user)
+
+	return render(request,"sacco.html",{
+		'sacco':sacco, 'savedSacco': savedSacco
+		})
+
+def delete_sacco(request,pk):
+	UserProfile.objects.filter(pk=pk).update(entities=None)
+	return redirect('sacco')	

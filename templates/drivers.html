@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="">
+
+	<div class="col-md-10">
+		 <div class="col-md-4">
+		 <h4><u>Add a Driver</u></h4>
+		 <div class="form-group">
+		 <form action="{% url 'drivers' %}" method="POST">
+		{% csrf_token %}
+		 	<label for="sel1">Select Vehicle:</label>
+		 	<select name="registration" class="form-control" id="sel1">
+		 		{%for items in available%}
+		 		<option value="{{items.vehicle_reg}}">{{items.vehicle_reg}}</option>
+		 		{%endfor%}
+		 	</select>
+		 	<div class="form-group">
+		 	<br>
+		 	<input type="submit"  class="btn btn-primary"  name=""/>
+		 	</div>
+		 </form>	
+		 </div>
+
+	    </div>
+	    <div class="col-md-4">
+	     <h4><u>Your Drivers</u></h4>
+	    <table class="table table-hover table-striped">
+	    	<thead>
+	    		<tr>
+	    			<th>#</th>
+	    			<th>Name</th>
+	    			<th>ID Number</th>
+	    			<th>Phone Number</th>
+	    			<th>Vehicle Registration</th>
+	    			<th>REMOVE</th>
+
+	    		</tr>
+	    	</thead>
+	    	<tbody>
+	    	{%for item in donda%}
+	    	<tr>
+	    		<th scope="row">{{item.id}}</th>
+	    		<td>{{item.name}}</td>
+	    		<td>{{item.id_number}}</td>
+	    		<td>{{item.vehicle_reg}}</td>
+	    		<td>{{item.phone_number}}</td>
+	    		<td>
+	    			<a href="{% url 'delete_driver' pk=item.pk %}" class="btn btn-danger btn-small">Remove</a>
+	    		</td>
+	    	</tr>
+	    	{% endfor%}
+	    	</tbody>
+	    </table>
+	  	    </div>
+	</div>
+		
+
+	
+</div>
+	
+{% endblock content %}

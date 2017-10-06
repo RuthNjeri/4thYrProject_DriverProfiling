@@ -1,0 +1,13 @@
+#sidebar > ul > li > a{
+	    background-color: rgba(41,121,255 ,0.7);
+    	color: white
+}
+
+#sidebar > ul > li > a:hover{
+	    background-color: gray;
+    	
+}
+
+tr,td,th,thead{
+	border: 0.2px solid #00838F;
+}
