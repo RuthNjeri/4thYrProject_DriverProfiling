@@ -16,8 +16,8 @@ class UserProfile(models.Model):
 	email = models.CharField(max_length=200,null=True)
 	location = models.CharField(max_length=200,null=True)
 	phone_number = models.CharField(max_length=200, null=True)
-	role=models.CharField(max_length=200,choices=ROLES_CHOICES, null=True)
-	entities=models.ForeignKey(User,blank =True,null=True,unique=False, related_name='entities')
+	role=models.CharField(max_length=200, null=True, choices= ROLES_CHOICES)
+	entities=models.ForeignKey(User,blank=True,null=True,unique=False, related_name='entities')
 	
 
 @receiver(post_save,sender=User)
@@ -25,10 +25,25 @@ def create_or_update_user_profile(sender,instance,created,**kwargs):
 	if created:
 		UserProfile.objects.create(user=instance)
 
-@receiver(post_save,sender=User)
-def save_user_profile(sender,instance,**kwargs):
-	instance.userprofile.save()
 
+
+class HumanValidationData(models.Model):
+
+	date = models.DateTimeField(max_length = 200, null=True)
+	registration_number = models.CharField(max_length=200,null=True)
+	route_number = models.CharField(max_length=200,null=True)
+	from_location = models.CharField(max_length=200, null=True)
+	to_location=models.CharField(max_length=200, null=True)
+	start_time=models.CharField(max_length=200, null=True)
+	end_time=models.CharField(max_length=200, null=True)
+	event_type=models.CharField(max_length=200, null=True)
+	event_description=models.CharField(max_length=200, null=True)
+	fare=models.CharField(max_length=200, null=True)
+	passengers=models.CharField(max_length=200, null=True)
+	exact_time=models.CharField(max_length=200, null=True)
+	latitude=models.CharField(max_length=200, null=True)
+	longitude=models.CharField(max_length=200, null=True)
+	altitude=models.CharField(max_length=200, null=True)
 
 
 

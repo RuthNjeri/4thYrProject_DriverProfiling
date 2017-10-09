@@ -1,19 +1,45 @@
+import json
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .forms import ProfileForm
 from django.contrib import messages
+from django.core import serializers
+
+
+from .forms import ProfileForm
 from log.models import UserProfile
 from ussd.models import Drivers
+from log.models import HumanValidationData
+
 
 # Create your views here.
 
 #the decorator is not to allow any view without authenticating
 @login_required(login_url = "login/")
 def home(request):
-	return render(request,"home.html")
+
+
+	
+	availableDrivers= Drivers.objects.filter(user=request.user)
+	availableSacco = UserProfile.objects.filter(entities=request.user)
+	
+
+	return render(request,"home.html",{
+		 'available': availableDrivers ,'sacco': availableSacco
+	})
+
+def vehicle_details(request, vehiclereg):
+	vehicle_details= HumanValidationData.objects.filter(registration_number__iexact=vehiclereg)
+	serialized_obj = serializers.serialize('json',vehicle_details)
+	return JsonResponse(json.loads(serialized_obj),safe=False)
+
+def sacco_details(request, pk):
+	sacco_vehicles = Drivers.objects.filter(user_id=pk)
+	serialized_obj = serializers.serialize('json', sacco_vehicles)
+	return JsonResponse(json.loads(serialized_obj),safe=False)
 
 
 def signup(request):
@@ -101,3 +127,6 @@ def sacco(request):
 def delete_sacco(request,pk):
 	UserProfile.objects.filter(pk=pk).update(entities=None)
 	return redirect('sacco')	
+
+
+	
