@@ -61,24 +61,26 @@
                   <div id="sidebar-wrapper" class="col-md-2">
                             <div id="sidebar">
                                 <ul class="nav list-group">
-                                {% if request.user.profile.role == 'Sacco' %}
+
+                                {% if request.user.profile.role and request.user.profile.role == 'Sacco' %}
+
                                 <li>
                                         <a class="list-group-item" href="{% url 'drivers' %}"><i class="icon-home icon-1x"></i>Drivers</a>
                                     </li>
                                                                         <li>
-                                        <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Driver Profile</a>
+                                        <a class="list-group-item" href="{% url 'driverProfile' %}"><i class="icon-home icon-1x"></i>Driver Profile</a>
                                     </li>
                                                                         <li>
                                         <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Reports</a>
                                     </li>
-                                    {% else %}
+                                    {% elif request.user.profile.role %}
 
                                     <li>
                                         <a class="list-group-item" href="{% url 'sacco' %}"><i class="icon-home icon-1x"></i>Saccos</a>
                                     </li>
 
                                                                         <li>
-                                        <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Driver Profile</a>
+                                        <a class="list-group-item" href="{% url 'driverProfile' %}"><i class="icon-home icon-1x"></i>Driver Profile</a>
                                     </li>
                                                                         <li>
                                         <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Reports</a>

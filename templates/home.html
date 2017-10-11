@@ -72,7 +72,7 @@
 
       function getDetails(reg) {
       	$.ajax({
-       			url: `home/vehicle/${reg}`,
+       			url: `/home/vehicle/${reg}`,
        			dataType:'json',
        			success: function(result){
 	       			result = Array.from(result);
@@ -138,10 +138,10 @@
 
        $('#saccoSelect').change(function(){
        		var sacco = $(this).val();
-       		console.log(sacco);
+       		
 
        		$.ajax({
-       			url: `home/sacco_details/${sacco}`,
+       			url: `/home/sacco_details/${sacco}`,
        			dataType:'json',
        			success: function(result){
        				$('#sel1').empty();
@@ -151,13 +151,15 @@
        				}
        			}
    			})
+   			var reg = $('#sel1').val();
+   			getDetails(reg); 
        })
        $(document).ready(function() {
        		sacco = $('#saccoSelect').val();
        		console.log('HERE ' + sacco )
 
        		$.ajax({
-       			url: `home/sacco_details/${sacco}`,
+       			url: `/home/sacco_details/${sacco}`,
        			dataType:'json',
        			success: function(result){
        				$('#sel1').empty();

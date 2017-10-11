@@ -36,6 +36,17 @@ def vehicle_details(request, vehiclereg):
 	serialized_obj = serializers.serialize('json',vehicle_details)
 	return JsonResponse(json.loads(serialized_obj),safe=False)
 
+def driver_details(request, vehiclereg):
+	driver_details= Drivers.objects.filter(vehicle_reg__iexact=vehiclereg)
+	sacco = UserProfile.objects.filter(user=driver_details.first().user).first()
+
+	serialized_obj = serializers.serialize('json',driver_details)
+	response = {}
+	response['driver_details']= json.loads(serialized_obj)
+
+	response['sacco']= sacco.business_name
+	return JsonResponse(response,safe=False)	
+
 def sacco_details(request, pk):
 	sacco_vehicles = Drivers.objects.filter(user_id=pk)
 	serialized_obj = serializers.serialize('json', sacco_vehicles)
@@ -51,7 +62,8 @@ def signup(request):
 			raw_password = form.cleaned_data.get('password1')
 			user = authenticate(username=username, password=raw_password)
 			login(request, user)
-			return redirect('home')
+			messages.success(request,'Please choose a role')
+			return redirect('profile')
 	else:
 		form = UserCreationForm()
 	return render(request, 'signup.html', {'form': form})
@@ -129,4 +141,13 @@ def delete_sacco(request,pk):
 	return redirect('sacco')	
 
 
+def driverProfile(request):
 	
+	driver = Drivers.objects.filter(user=request.user)
+	sacco = UserProfile.objects.filter(entities=request.user)
+
+
+	return render(request, "driverProfile.html",{
+		'drivers': driver, 'sacco': sacco
+		
+	})
