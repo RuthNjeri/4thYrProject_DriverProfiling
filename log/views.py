@@ -1,4 +1,5 @@
 import json
+import random
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,7 @@ from .forms import ProfileForm
 from log.models import UserProfile
 from ussd.models import Drivers
 from log.models import HumanValidationData
+from log.models import SensorData
 
 
 # Create your views here.
@@ -45,6 +47,17 @@ def driver_details(request, vehiclereg):
 	response['driver_details']= json.loads(serialized_obj)
 
 	response['sacco']= sacco.business_name
+
+	#fetch sensor data. Reusing serialize
+	ids = list(SensorData.objects.values_list('id',flat=True))
+
+	n = 100
+	rand_ids = random.sample(set(ids),n)
+
+	cluster = list(SensorData.objects.filter(id__in=rand_ids).values_list('cluster',flat=True))
+
+	response['cluster']= cluster
+
 	return JsonResponse(response,safe=False)	
 
 def sacco_details(request, pk):
@@ -151,3 +164,4 @@ def driverProfile(request):
 		'drivers': driver, 'sacco': sacco
 		
 	})
+

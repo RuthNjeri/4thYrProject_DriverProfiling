@@ -55,18 +55,34 @@
                     </div>
                     <div class="col-sm-6 col-md-8">
                         <h4 id="drivername">Name</h4>
-                        <i class="fa fa-id-card-o"></i><small><cite id="id_num">ID Number</cite></small>
+                        <i class="fa fa-id-card-o"></i><strong><cite id="id_num">ID Number</cite></strong>
                         <br>
-                        <i class="fa fa-phone"></i><small><cite id="phone_num">Phone Number</cite></small>
+                        <i class="fa fa-phone"></i><strong><cite id="phone_num">Phone Number</cite></strong>
                         <br>
-                        <h3><i class="fa fa-star"></i>Score</h3>
+                        <h3><i class="fa fa-star"></i>Driver Score</h3>
+                        <table class="table table-striped" id="table">
+                        	
+	                        	<tr>
+	                        		<th>Cluster</th>
+	                        		<th>Count</th>
+	                        		<th>Meaning</th>
+	                        	</tr>
+                        	
+ 
+     
+                        	
+                        </table>
+                        
                         <h3 id="sacco">Sacco</h3>
                     </div>
                 </div>
             </div>
         </div>
-	<div id="pieChart"></div>
-	<h3>Driver Events on The Road.</h3>
+        <div class="col-md-8">
+			    	
+			<div id="pieChart"></div>
+			<h3>Driver Events on The Road.</h3>
+        </div>
    </div>
    
 </div>
@@ -102,7 +118,7 @@ var pie = new d3pie("pieChart", {
 		"location": "bottom-left"
 	},
 	"size": {
-		"canvasWidth": 590,
+		"canvasWidth": 700,
 		"pieInnerRadius": "1%",
 		"pieOuterRadius": "98%"
 	},
@@ -184,6 +200,7 @@ var pie = new d3pie("pieChart", {
 			       					'color': colors.pop(),
 			       				})
 			       			}
+			       			// console.log('Percentages: ' + percentages)
 			       			pie.updateProp('data.content', data);
 			       	}
 	       		})}
@@ -198,6 +215,37 @@ var pie = new d3pie("pieChart", {
 	       				$('#id_num').text(driver.fields.id_number)
 	       				$('#phone_num').text(driver.fields.phone_number)
 	       				$('#sacco').text("Sacco: "+result.sacco)
+	       				cluster= result.cluster
+	       				score={}
+	       				for (i=0; i < cluster.length; i++) {
+
+			       				score[cluster[i]] = 
+			       					score[cluster[i]] ? 
+			       					score[cluster[i]] +1 : 1;
+		       			}
+			       		delete score['null']
+			       		explanation = {
+			       			0: 'Moderately Risky On The Road',
+			       			1: 'Very High Risk On The Road',
+			       			3: 'High Risk On The Road',
+			       			2: 'Moderate to High Risk',
+			       			4: 'Low Risk'
+			       		}
+			       		$('.table-element').remove()
+
+			       		for (s in score) {
+			       			var row = $('<tr />', {class:'table-element'}).appendTo("#table");
+			       			$('<td />', {
+						        'text': s
+						    }).appendTo(row);
+						    $('<td />', {
+						        'text': score[s]
+						    }).appendTo(row);
+						    $('<td />', {
+						        'text': explanation[s]
+						    }).appendTo(row);
+
+				       		}
 	       				}
 	       			}
 	   			)
@@ -224,8 +272,6 @@ var pie = new d3pie("pieChart", {
        		}
           $('#sel1').change(function(){
 	       		var vehicle_reg = $(this).val();
-	       		
-
 	       		$.ajax({
 	       			url: `${vehicle_reg}`,
 	       			dataType:'json',
@@ -237,6 +283,7 @@ var pie = new d3pie("pieChart", {
 	       				$('#sacco').text("Sacco: "+result.sacco)
 	       			}})
 	       		getDetails(vehicle_reg);
+	       		updateDriverDetails(vehicle_reg);
    			})
    	
 

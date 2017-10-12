@@ -46,7 +46,10 @@ class HumanValidationData(models.Model):
 	altitude=models.CharField(max_length=200, null=True)
 
 
+class SensorData(models.Model):
 
-
+	acc_v_max = models.CharField(max_length = 200, null=True)
+	acc_l_max = models.CharField(max_length=200,null=True)	
+	cluster = models.CharField(max_length=200,null=True)	
 
 		
