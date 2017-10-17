@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 from ussd.models import Drivers
+from log.models import HumanValidationData
+from django.db.models import Sum, F
 # Create your views here.
 @csrf_exempt
 def ussd(request):
@@ -51,10 +53,71 @@ def ussd(request):
 
 														
 					response = "CON Please select a service.\n"
-					response += "1. View my driving report."
-					response += "2. Help."
+					response += "1. View my driving report.\n"
+					response += "2. Help.\n"
 
 					return HttpResponse(response, content_type='text/plain')
+
+				if text == '1*1':
+
+					user = Drivers.objects.get(phone_number=phoneNumber)
+					amount =HumanValidationData.objects.filter(registration_number=user.vehicle_reg).aggregate(amount=Sum(F('passengers')*F('fare')))
+					fare = [amount for amount in amount.values()]
+					
+					passengers = HumanValidationData.objects.filter(registration_number=user.vehicle_reg).aggregate(Sum('passengers'))
+					for value in passengers.values():
+						
+									
+						response = "END Your Report:\n"
+						response += "1. You have had ["+str(value)+"] PASSENGERS in total.\n"
+						response += "2. The total amount of FARE collected is Ksh "+str(fare)+"."
+						
+
+					return HttpResponse(response, content_type='text/plain')	
+
+				if text == '1*2':
+
+						response = "END Help:\n"
+						response += "send the keyword HELP to 2284. You can also reach us at +254727584378\n"
+
+						
+
+						return HttpResponse(response, content_type='text/plain')	
+
+				if text == '2':
+
+														
+					response = "CON Tafadhali chagua nabari yeyote.\n"
+					response += "1. Angalia ripoti yangu barabarani.\n"
+					response += "2. Usaidizi.\n"
+
+					return HttpResponse(response, content_type='text/plain')
+
+				if text == '2*1':
+
+					user = Drivers.objects.get(phone_number=phoneNumber)
+					amount =HumanValidationData.objects.filter(registration_number=user.vehicle_reg).aggregate(amount=Sum(F('passengers')*F('fare')))
+					fare = [amount for amount in amount.values()]
+					
+					passengers = HumanValidationData.objects.filter(registration_number=user.vehicle_reg).aggregate(Sum('passengers'))
+					for value in passengers.values():
+						
+									
+						response = "END Ripoti Yako:\n"
+						response += "1. Umebeba abiria ["+str(value)+"].\n"
+						response += "2. Umepokea pesa kutoka abiria Shillingi "+str(fare)+"."
+						
+
+					return HttpResponse(response, content_type='text/plain')
+
+				if text == '2*2':
+
+						response = "END Help:\n"
+						response += "Tuma jina USAIDIZI kwa 2284. Tupigie simu kwa nambari +254727584378\n"
+
+						
+
+						return HttpResponse(response, content_type='text/plain')		
 
 			else:
 				
