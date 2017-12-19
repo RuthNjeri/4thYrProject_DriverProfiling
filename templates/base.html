@@ -71,19 +71,19 @@
                                         <a class="list-group-item" href="{% url 'driverProfile' %}"><i class="icon-home icon-1x"></i>Driver Profile</a>
                                     </li>
                                                                         <li>
-                                        <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Reports</a>
-                                    </li>
+                                        <a class="list-group-item" href="{% url 'report' %}"><i class="icon-home icon-1x"></i>Reports</a>
+                                    </li> 
                                     {% elif request.user.profile.role %}
 
                                     <li>
                                         <a class="list-group-item" href="{% url 'sacco' %}"><i class="icon-home icon-1x"></i>Saccos</a>
                                     </li>
 
-                                                                        <li>
+                                                                       <li>
                                         <a class="list-group-item" href="{% url 'driverProfile' %}"><i class="icon-home icon-1x"></i>Driver Profile</a>
                                     </li>
                                                                         <li>
-                                        <a class="list-group-item" href="#"><i class="icon-home icon-1x"></i>Reports</a>
+                                        <a class="list-group-item" href="{% url 'report' %}"><i class="icon-home icon-1x"></i>Reports</a>
                                     </li>
                                 </ul>
                                 {% endif %}

@@ -131,7 +131,7 @@ def delete_driver(request,pk):
 	Drivers.objects.filter(pk=pk).update(user=None)
 	return redirect('drivers')
 
-
+5
 
 
 
@@ -165,3 +165,12 @@ def driverProfile(request):
 		
 	})
 
+def report(request):
+	
+	report = HumanValidationData.objects.all()
+
+
+	return render(request, "reports.html",{
+		'report': report
+		
+	})

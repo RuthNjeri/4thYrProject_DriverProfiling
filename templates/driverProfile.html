@@ -72,7 +72,10 @@
      
                         	
                         </table>
-                        
+
+                        <h3>Premium based on risk</h3>
+
+                       <button style="display:none;" class="btn btn-large" id="premium"></button>
                         <h3 id="sacco">Sacco</h3>
                     </div>
                 </div>
@@ -233,6 +236,25 @@ var pie = new d3pie("pieChart", {
 			       		}
 			       		$('.table-element').remove()
 
+			       		var highRisk = score[1]
+			       		var total = 0
+			       		Object.keys(score).map(function(key){
+			       				total += score[key]
+			       				
+			       		})
+
+			       		riskPercentage = (highRisk/total)*100
+
+			       		if (riskPercentage > 20 ){
+
+			       			$('#premium').addClass("btn-danger").show().text("High Premium Driver")
+
+			       		}
+			       		else{
+			       			$('#premium').addClass("btn-success").show().text("Low Premium Driver")
+			       		}
+			       		
+
 			       		for (s in score) {
 			       			var row = $('<tr />', {class:'table-element'}).appendTo("#table");
 			       			$('<td />', {
@@ -299,10 +321,13 @@ var pie = new d3pie("pieChart", {
 
 
           $(document).ready(function() {
-       		sacco = $('#saccoSelect').val();
+       		vehicle_reg = $('#sel1').val();
+       		if (vehicle_reg) {
+	       		updateDriverDetails(vehicle_reg);
+       		}
+   			sacco = $('#saccoSelect').val();
        		updateSaccoDrivers(sacco);
-
-   			// Get the initial saccos
+ 
    				 	
        })
 

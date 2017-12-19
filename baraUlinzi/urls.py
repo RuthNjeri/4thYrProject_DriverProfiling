@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^home/$', views.home, name='home'),
     url(r'^sacco/$', views.sacco, name='sacco'),
+    url(r'^report/$',views.report, name='report'),
     url(r'^driverProfile/$', views.driverProfile, name='driverProfile'),
     url(r'^sacco/delete/(?P<pk>\d+)/$',views.delete_sacco, name='delete_sacco'),
     url(r'^home/vehicle/(?P<vehiclereg>\w+)/$',views.vehicle_details, name='vehicle_details'),
